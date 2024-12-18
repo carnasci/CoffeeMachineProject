@@ -35,7 +35,10 @@ current_resources = {
     "water": 300,
     "milk": 200,
     "coffee": 100,
+    "money": 0,
 }
+
+user_coins = {}
 
 def generate_report(machine_resources):
     """Takes current resources in machine and formats it to generate a report."""
@@ -57,6 +60,25 @@ def check_if_resources_sufficient(drink, machine_resources):
                 print(f"Sorry, not enough {key}.")
                 return False
 
+def tally_coins(coins):
+    """Takes a dictionary of coins and returns the total monetary value."""
+    total = 0
+    total += coins["quarters"] * .25
+    total += coins["dimes"] * .1
+    total += coins["nickels"] * .05
+    total += coins["pennies"] * .01
+    return total
+
+def check_price(inserted_money, drink_cost):
+    if inserted_money < drink_cost:
+        print("Sorry, that's not enough money. Money refunded.")
+        return False
+    else:
+        change = inserted_money - drink_cost
+        print(f"Here is ${round(change, 2)} in change.")
+        return True
+
+
 # TODO#1 prompt user by asking "What would you like (espresso/latte/cappuccino)?"
 # TODO#2 turn the machine off when given the prompt "off"
 # TODO#3 generates a report of current resources when given the prompt "report"
@@ -74,4 +96,15 @@ while on:
         user_choice = MENU[user_choice]
         print(user_choice)
 
-    print(check_if_resources_sufficient(user_choice["ingredients"], current_resources))
+    if check_if_resources_sufficient(user_choice["ingredients"], current_resources):
+        print("Please insert coins.")
+        print(f"drink costs {user_choice["cost"]}")
+        user_coins["quarters"] = int(input("how many quarters?: "))
+        user_coins["dimes"] = int(input("how many dimes?: "))
+        user_coins["nickels"] = int(input("how many nickels?: "))
+        user_coins["pennies"] = int(input("how many pennies?: "))
+
+    user_money = tally_coins(user_coins)
+    if check_price(user_money, user_choice["cost"]):
+        current_resources["money"] += user_choice["cost"]
+    print(current_resources)
