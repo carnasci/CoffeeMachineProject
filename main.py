@@ -78,12 +78,25 @@ def check_price(inserted_money, drink_cost):
         print(f"Here is ${round(change, 2)} in change.")
         return True
 
+def update_resources(machine_resources, drink_resources):
+    """Updates resources in machine after drink has been ordered."""
+    updated_resources = {}
+    for key, value in machine_resources.items():
+        for k, v in drink_resources.items():
+            if key == k:
+                new_key = key
+                new_value = value - v
+                updated_resources[new_key] = new_value
+
+    return updated_resources
+
 
 # TODO#1 prompt user by asking "What would you like (espresso/latte/cappuccino)?"
 # TODO#2 turn the machine off when given the prompt "off"
 # TODO#3 generates a report of current resources when given the prompt "report"
 # TODO#4 check if resources are sufficient
 # TODO#5 if there is enough resources to make a drink ask the user for coins
+# TODO#6 update machine resources
 
 while on:
     user_choice = input("What would you like (espresso/latte/cappuccino)? ").lower()
@@ -107,4 +120,5 @@ while on:
     user_money = tally_coins(user_coins)
     if check_price(user_money, user_choice["cost"]):
         current_resources["money"] += user_choice["cost"]
+        current_resources = update_resources(current_resources, user_choice["ingredients"])
     print(current_resources)
