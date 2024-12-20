@@ -116,8 +116,11 @@ while on:
         user_coins["dimes"] = int(input("how many dimes?: "))
         user_coins["nickels"] = int(input("how many nickels?: "))
         user_coins["pennies"] = int(input("how many pennies?: "))
+    else:
+        on = False
 
     user_money = tally_coins(user_coins)
+
     if check_price(user_money, user_choice["cost"]):
         current_resources["money"] += user_choice["cost"]
         current_resources = update_resources(current_resources, user_choice["ingredients"])
