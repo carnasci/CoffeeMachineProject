@@ -30,7 +30,7 @@ resources = {
     "coffee": 100,
 }
 
-on = True
+is_on = True
 current_resources = {
     "water": 300,
     "milk": 200,
@@ -98,14 +98,14 @@ def update_resources(machine_resources, drink_resources):
 # TODO#5 if there is enough resources to make a drink ask the user for coins
 # TODO#6 update machine resources
 
-while on:
+while is_on:
     user_choice = input("What would you like (espresso/latte/cappuccino)? ").lower()
 
     if user_choice == "off":
-        on = False
+        is_on = False
     elif user_choice == "report":
         generate_report(current_resources)
-    elif user_choice in MENU:
+    else:
         drink_choice = MENU[user_choice]
 
         resources_ok = check_if_resources_sufficient(drink_choice["ingredients"], current_resources)
