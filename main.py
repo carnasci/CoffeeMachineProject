@@ -36,7 +36,6 @@ current_resources = {
     "milk": 200,
     "coffee": 100,
 }
-machine_money = {"money": 0}
 user_coins = {}
 
 def generate_report(machine_resources):
@@ -113,7 +112,6 @@ while on:
 
         if resources_ok:
             print("Please insert coins.")
-            print(f"drink costs {drink_choice["cost"]}")
             user_coins["quarters"] = int(input("how many quarters?: "))
             user_coins["dimes"] = int(input("how many dimes?: "))
             user_coins["nickels"] = int(input("how many nickels?: "))
@@ -126,5 +124,4 @@ while on:
                 current_resources = update_resources(current_resources, drink_choice["ingredients"])
                 current_resources.setdefault("money", 0)
                 current_resources["money"] += drink_choice["cost"]
-                print(f"Here is your {user_choice}. Enjoy.")
-                print(current_resources)
+                print(f"Here is your {user_choice} ☕. Enjoy.")
