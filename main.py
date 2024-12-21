@@ -35,9 +35,8 @@ current_resources = {
     "water": 300,
     "milk": 200,
     "coffee": 100,
-    "money": 0,
 }
-
+machine_money = {"money": 0}
 user_coins = {}
 
 def generate_report(machine_resources):
@@ -87,6 +86,8 @@ def update_resources(machine_resources, drink_resources):
                 new_key = key
                 new_value = value - v
                 updated_resources[new_key] = new_value
+            elif key == "money":
+                updated_resources["money"] = value
 
     return updated_resources
 
@@ -109,19 +110,21 @@ while on:
         user_choice = MENU[user_choice]
         print(user_choice)
 
-    if check_if_resources_sufficient(user_choice["ingredients"], current_resources):
-        print("Please insert coins.")
-        print(f"drink costs {user_choice["cost"]}")
-        user_coins["quarters"] = int(input("how many quarters?: "))
-        user_coins["dimes"] = int(input("how many dimes?: "))
-        user_coins["nickels"] = int(input("how many nickels?: "))
-        user_coins["pennies"] = int(input("how many pennies?: "))
-    else:
-        on = False
+        resources_ok = check_if_resources_sufficient(user_choice["ingredients"], current_resources)
 
-    user_money = tally_coins(user_coins)
+        if resources_ok:
+            print("Please insert coins.")
+            print(f"drink costs {user_choice["cost"]}")
+            user_coins["quarters"] = int(input("how many quarters?: "))
+            user_coins["dimes"] = int(input("how many dimes?: "))
+            user_coins["nickels"] = int(input("how many nickels?: "))
+            user_coins["pennies"] = int(input("how many pennies?: "))
 
-    if check_price(user_money, user_choice["cost"]):
-        current_resources["money"] += user_choice["cost"]
-        current_resources = update_resources(current_resources, user_choice["ingredients"])
-    print(current_resources)
+            user_money = tally_coins(user_coins)
+
+            if check_price(user_money, user_choice["cost"]):
+
+                current_resources = update_resources(current_resources, user_choice["ingredients"])
+                current_resources.setdefault("money", 0)
+                current_resources["money"] += user_choice["cost"]
+                print(current_resources)
