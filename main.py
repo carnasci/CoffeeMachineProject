@@ -107,14 +107,13 @@ while on:
     elif user_choice == "report":
         generate_report(current_resources)
     elif user_choice in MENU:
-        user_choice = MENU[user_choice]
-        print(user_choice)
+        drink_choice = MENU[user_choice]
 
-        resources_ok = check_if_resources_sufficient(user_choice["ingredients"], current_resources)
+        resources_ok = check_if_resources_sufficient(drink_choice["ingredients"], current_resources)
 
         if resources_ok:
             print("Please insert coins.")
-            print(f"drink costs {user_choice["cost"]}")
+            print(f"drink costs {drink_choice["cost"]}")
             user_coins["quarters"] = int(input("how many quarters?: "))
             user_coins["dimes"] = int(input("how many dimes?: "))
             user_coins["nickels"] = int(input("how many nickels?: "))
@@ -122,9 +121,10 @@ while on:
 
             user_money = tally_coins(user_coins)
 
-            if check_price(user_money, user_choice["cost"]):
+            if check_price(user_money, drink_choice["cost"]):
 
-                current_resources = update_resources(current_resources, user_choice["ingredients"])
+                current_resources = update_resources(current_resources, drink_choice["ingredients"])
                 current_resources.setdefault("money", 0)
-                current_resources["money"] += user_choice["cost"]
+                current_resources["money"] += drink_choice["cost"]
+                print(f"Here is your {user_choice}. Enjoy.")
                 print(current_resources)
